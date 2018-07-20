@@ -1,0 +1,9 @@
+c:\users\analog\documents\visual studio 2017\Projects\TBuilder\TBuilder\bin\Debug\TBuilder.exe.config
+c:\users\analog\documents\visual studio 2017\Projects\TBuilder\TBuilder\bin\Debug\TBuilder.exe
+c:\users\analog\documents\visual studio 2017\Projects\TBuilder\TBuilder\bin\Debug\TBuilder.pdb
+c:\users\analog\documents\visual studio 2017\Projects\TBuilder\TBuilder\bin\Debug\Newtonsoft.Json.dll
+c:\users\analog\documents\visual studio 2017\Projects\TBuilder\TBuilder\bin\Debug\Newtonsoft.Json.xml
+c:\users\analog\documents\visual studio 2017\Projects\TBuilder\TBuilder\obj\Debug\TBuilder.csprojResolveAssemblyReference.cache
+c:\users\analog\documents\visual studio 2017\Projects\TBuilder\TBuilder\obj\Debug\TBuilder.csproj.CoreCompileInputs.cache
+c:\users\analog\documents\visual studio 2017\Projects\TBuilder\TBuilder\obj\Debug\TBuilder.exe
+c:\users\analog\documents\visual studio 2017\Projects\TBuilder\TBuilder\obj\Debug\TBuilder.pdb

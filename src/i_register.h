@@ -1,5 +1,5 @@
 #pragma once
-#include "project_config.h"
+#include "eng_settings.h"
 
 
 enum class RegAccessType
@@ -105,35 +105,77 @@ class Uint8Reg : public Register<uint8_t>
         }
 };
 
-class Table
+
+
+
+
+enum class RoUint32RegNames
+{
+    x = 0,
+    y = 1,
+    z = 2,
+    FUCK = 3,
+};
+
+enum class RoInt8RegNames
+{
+    tmp1 = 4,
+    tmp2 = 5,
+};
+
+enum class WoUint32RegNames
+{
+    x = 6,
+    y = 7,
+    z = 8,
+};
+
+enum class WoInt8RegNames
+{
+    tmp1 = 9,
+    tmp2 = 10,
+};
+
+
+class SimpleTable
 {
     public:
-        Table()
+        Uint32Reg & getReg(RoUint32RegNames addr)
         {
+            return m_rouint32regnames_gen[static_cast<uint32_t>(addr) - 0];
+        }
+        Uint8Reg & getReg(RoInt8RegNames addr)
+        {
+            return m_roint8regnames_gen[static_cast<uint32_t>(addr) - 4];
+        }
+        Uint32Reg & getReg(WoUint32RegNames addr)
+        {
+            return m_wouint32regnames_gen[static_cast<uint32_t>(addr) - 6];
+        }
+        Uint8Reg & getReg(WoInt8RegNames addr)
+        {
+            return m_woint8regnames_gen[static_cast<uint32_t>(addr) - 9];
+        }
 
-        }
-        Uint32Reg uInt32_regs[3] = { Uint32Reg(0, RegAccessType::RO),
-                                     Uint32Reg(0, RegAccessType::RO),
-                                     Uint32Reg(0, RegAccessType::RO)};
-        Uint8Reg uInt8_regs[3] = { Uint8Reg(0, RegAccessType::RO),
-                                             Uint8Reg(0, RegAccessType::RO),
-                                             Uint8Reg(0, RegAccessType::RO)};
-        uint8_t getRegVal(uint32_t addr)
-        {
-            return getReg(addr).getRegVal();
-        }
-
-        Uint8Reg & getReg(uint32_t addr)
-        {
-            return (Uint8Reg & )totalRegs[addr];
-        }
-        IRegister * totalRegs[2] = {&uInt32_regs[0], &uInt8_regs[0]};
     private:
-        const uint32_t m_uint8_t_start_pos = 3;
+        Uint32Reg m_rouint32regnames_gen[4] = { Uint32Reg(0, RegAccessType::RO),
+                                                Uint32Reg(1, RegAccessType::RO),
+                                                Uint32Reg(2, RegAccessType::RO),
+                                                Uint32Reg(3, RegAccessType::RO) };
+
+        Uint8Reg m_roint8regnames_gen[2] = { Uint8Reg(4, RegAccessType::RO),
+                                             Uint8Reg(5, RegAccessType::RO) };
+
+        Uint32Reg m_wouint32regnames_gen[3] = { Uint32Reg(6, RegAccessType::WO),
+                                                Uint32Reg(7, RegAccessType::WO),
+                                                Uint32Reg(8, RegAccessType::WO) };
+
+        Uint8Reg m_woint8regnames_gen[2] = { Uint8Reg(9, RegAccessType::WO),
+                                             Uint8Reg(10, RegAccessType::WO) };
 
 };
 
-enum class Uint32RegNames { x = 0, y = 1, z = 2 };
+
 
 
 
