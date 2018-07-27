@@ -12,8 +12,8 @@ class IPacket
         virtual ~IPacket(){};
 };
 
-template<uint8_t MaxHeaderLen, uint8_t MaxDataLen>
-class Packet : IPacket
+template<uint32_t MaxHeaderLen, uint32_t MaxDataLen>
+class Packet : public IPacket
 {
     public:
     void setData(uint8_t * buf, uint32_t len)
@@ -32,7 +32,6 @@ class Packet : IPacket
         *len = m_dataLen;
     }
 
-
     void setHeader(uint8_t * buf, uint32_t len)
     {
         if(len > MaxHeaderLen)
@@ -43,15 +42,15 @@ class Packet : IPacket
         m_headerLen = len;
     }
 
-    void getHeader(uint8_t * buf, uint8_t * len)
+    void getHeader(uint8_t * buf, uint32_t * len)
     {
         memcpy(buf, m_headerData, m_headerLen);
         *len = m_headerLen;
     }
 
     private:
-    uint8_t m_dataLen = 0;
-    uint8_t m_headerLen = 0;
+    uint32_t m_dataLen = 0;
+    uint32_t m_headerLen = 0;
     uint8_t m_data[MaxDataLen];
     uint8_t m_headerData[MaxHeaderLen];
 };
