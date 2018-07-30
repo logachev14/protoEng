@@ -1,53 +1,35 @@
-#pragma once
-#include "i_table.h"
-
-class SlTable : public  ITable
-{
-    public :
-        void getRoRegs(IRegister * regs, uint32_t regsNum)
-                {
-
-                }
-    private:
-        uint32_t m_someVal = 555;
-};
-
 
 enum class RoUint32RegNames
 {
-    x = 0,
-    y = 1,
-    z = 2,
-    FUCK = 3,
+	x = 0,
+	y = 1,
+	z = 2,
+	FUCK = 3,
 };
 
 enum class RoInt8RegNames
 {
-    tmp1 = 4,
-    tmp2 = 5,
+	tmp1 = 4,
+	tmp2 = 5,
 };
 
 enum class WoUint32RegNames
 {
-    x = 6,
-    y = 7,
-    z = 8,
+	x = 6,
+	y = 7,
+	z = 8,
 };
 
 enum class WoInt8RegNames
 {
-    tmp1 = 9,
-    tmp2 = 10,
+	tmp1 = 9,
+	tmp2 = 10,
 };
 
 
-class SimpleTable : public ITable
+class SimpleTable
 {
-    public:
-        void getRoRegs(IRegister * regs, uint32_t regsNum)
-        {
-
-        }
+    public: 
         Uint32Reg & getReg(RoUint32RegNames addr)
         {
             return m_rouint32regnames_gen[static_cast<uint32_t>(addr) - 0];
@@ -64,13 +46,6 @@ class SimpleTable : public ITable
         {
             return m_woint8regnames_gen[static_cast<uint32_t>(addr) - 9];
         }
-        template<class NewValType>
-        void writeReg(WoUint32RegNames addr, NewValType newVal)
-        {
-                m_wouint32regnames_gen[static_cast<uint32_t>(addr) - 6].writeReg(newVal);
-        }
-
-
 
     private:
         Uint32Reg m_rouint32regnames_gen[4] = { Uint32Reg(0, RegAccessType::RO),

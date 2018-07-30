@@ -14,7 +14,10 @@ class SlMaster
         {
             addSlave(slavesArg...);
         }
+        void updateRoRegs()
+        {
 
+        }
     private:
         template <class... AddArg>
         void addSlave(ISlave * slave, AddArg*... slavesArg)

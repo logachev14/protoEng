@@ -37,13 +37,17 @@ public:
     virtual void getBytes(uint8_t * buf, uint32_t * len) = 0;
     virtual void setBytes(uint8_t * buf, uint32_t len) = 0;
     virtual uint32_t getLen() = 0;
-    virtual uint32_t getRegAddr()
+    uint32_t getRegAddr()
     {
             return m_addr;
     }
     RegAccessType getAccessType()
     {
         return m_accType;
+    }
+    void writeReg(T newVal)
+    {
+        m_value = newVal;
     }
 protected:
     T m_value;

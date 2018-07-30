@@ -11,6 +11,7 @@ int main()
 {
     SlTable myTable;
     SimpleTable smTable;
+    smTable.writeReg(WoUint32RegNames::x, 100);
     SlSlave<SimpleTable> slave1(10, smTable);
     SlSlave<SimpleTable> slave2(20, smTable);
     SlSlave<SlTable> slave3(30, myTable);
