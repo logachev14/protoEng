@@ -7,20 +7,20 @@
 class ITransportProvider
 {
     public:
-        // для "личного пользования" тип отправить говна нетворк провайдеру.
+        // для того, что стоит выше
         virtual void send(ISegment & segment) = 0;
-        // для публичного пользования, тип отправить говна в тарелке для слейва.
-        virtual void writeRegAtSlave(ISlave & slave, IRegister & reg) = 0;
-        virtual void readRegs(ISlave & slave, IRegister * regs, uint32_t regsNum) = 0;
-        virtual void readRegsAsync(ISlave & slave, IRegister * regs, uint32_t regsNum) = 0;
+
+        // для Network provider'a
+        virtual void packetReceived(IPacket & packet) = 0;
+        callback::Callback<void (IPacket & packet)> sendPacket;
         virtual ~ITransportProvider(){};
 };
 
-
-class SlTransportProvider
+class SlTransportProvider : public ITransportProvider
 {
-    public:
-        SlTransportProvider()
-    private:
-        void
+        void send(ISegment & segment)
+        {
+
+        }
 };
+

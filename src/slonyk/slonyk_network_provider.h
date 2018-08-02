@@ -1,78 +1,47 @@
 #pragma once
+#include <i_data_link_provider.h>
 #include "slonyk_settings.h"
 #include "i_network_provider.h"
 #include "slonyk_packet.h"
 
+template<uint32_t ProvidersNum>
+class SlNetworkProvider : public INetworkProvider
+{
+    public:
+        void send(IPacket & packet)
+        {
+            uint8_t * dataPtr = 0;
+            uint32_t * len = 0;
+            //packet.getData(dataPtr, len);
+            sendData(dataPtr, *len);
+        }
 
+        SlNetworkProvider() : m_totalProviders(0)
+        {
 
+        }
+        void AddProvider(ITransportProvider * provider)
+        {
+            if(m_totalProviders == ProvidersNum)
+            {
+                ENG_ASSERT();
+            }
+            m_providers[m_totalProviders] = provider;
+            m_providers[m_totalProviders]->sendPacket = CALLBACK_BIND_MEMBER(*this, SlNetworkProvider::send);
+        }
 
-//class SlSlaveNetworkProvider : public INetworkProvider
-//{
-//    public:
-//        SlSlaveNetworkProvider(uint16_t addr) : m_addr(addr)
-//        {
-//
-//        }
-//        void send(ISegment & segment)
-//        {
-//
-//        }
-//        void dataReceived(uint8_t * data, uint32_t len)
-//        {
-//            uint16_t recAddr;
-//            memcpy(&recAddr, data + SL_ADDRESS_START_POS, sizeof(recAddr));
-//
-//            if(m_addr == recAddr || recAddr == SL_BROADCAST_ADDRESS)
-//            {
-//                m_slutPacket.setHeader(data, SL_HEADER_LEN);
-//                m_slutPacket.setData(data + SL_DATA_START_POS, len - SL_HEADER_LEN);
-//                onPacketReceived(m_slutPacket);
-//            }
-//        }
-//    private:
-//        SlPacket m_slutPacket;
-//        uint16_t m_addr;
-//};
-//
-//template<uint16_t... slaves>
-//class SlMasterNetworkProvider : public INetworkProvider
-//{
-//    public:
-//        SlMasterNetworkProvider()
-//        {
-//
-//        }
-//        void send(ISegment & segment)
-//        {
-//
-//        }
-//        void dataReceived(uint8_t * data, uint32_t len)
-//        {
-//            uint16_t recAddr;
-//            memcpy(&recAddr, data + SL_ADDRESS_START_POS, sizeof(recAddr));
-//
-//            if(isAddrInRange(recAddr) || recAddr == SL_BROADCAST_ADDRESS)
-//            {
-//                m_slutPacket.setHeader(data, SL_HEADER_LEN);
-//                m_slutPacket.setData(data + SL_DATA_START_POS, len - SL_HEADER_LEN);
-//                onPacketReceived(m_slutPacket);
-//            }
-//        }
-//    private:
-//        SlPacket m_slutPacket;
-//        uint32_t m_nums = sizeof...(slaves);
-//        uint16_t m_slavesAddr[sizeof...(slaves)] = {slaves ...};
-//        bool isAddrInRange(uint16_t addr)
-//        {
-//            bool result = false;
-//            for(uint32_t i = 0; i < m_nums; i++ )
-//            {
-//                if(m_slavesAddr[i] == addr)
-//                {
-//                    result = true;
-//                    break;
-//                }
-//            }
-//            return result;
-//        }
-//};
+        void dataReceived(uint8_t * data, uint32_t len)
+        {
+            m_slutPacket.setHeader(data, SL_HEADER_LEN);
+            m_slutPacket.setData(data + SL_DATA_START_POS, len - SL_HEADER_LEN);
+            for(uint8_t i = 0; i < m_totalProviders; i++ )
+            {
+                m_providers[i]->packetReceived(m_slutPacket);
+            }
+        }
+
+    protected:
+        ITransportProvider * m_providers[ProvidersNum];
+        uint32_t m_totalProviders;
+        SlPacket m_slutPacket;
+};

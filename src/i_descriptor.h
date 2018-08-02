@@ -4,6 +4,5 @@
 class IDescriptor
 {
     public:
-        virtual ITable & getTable() = 0;
         virtual ~IDescriptor(){};
 };

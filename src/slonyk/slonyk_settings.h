@@ -9,4 +9,9 @@
 // в байтах
 #define SL_HEADER_LEN 4
 #define SL_MAX_DATA_LEN 200
+#define SL_MAX_PACKET_LEN 204
+
+#define SL_ACK_POS 0
+#define SL_MTYPE_POS 1
+#define SL_ADDR_POS 2
 
