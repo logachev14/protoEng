@@ -1,6 +1,11 @@
 #pragma once
 
-#define SL_ADDRESS_START_POS 2
+#define SL_ACK_REQUEST 0
+#define SL_ACK_RESPONSE 1
+
+#define SL_MESS_BROADCAST 0
+#define SL_MESS_WRITE 1
+#define SL_MESS_READ 2
 
 
 

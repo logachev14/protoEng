@@ -1,6 +1,5 @@
 #pragma once
 #include "eng_settings.h"
-#include "i_segment.h"
 
 class IPacket
 {
