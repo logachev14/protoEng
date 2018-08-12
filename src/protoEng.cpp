@@ -6,6 +6,7 @@
 #include "slonyk_slave.h"
 #include "slonyk_table.h"
 #include "slonyk_data_link_provider.h"
+#include "i_provider.h"
 using namespace std;
 
 
@@ -32,9 +33,30 @@ class SomeSlLinkProvider : public SlDataLinkProvider<1>
         }
 };
 
+class SlRawData
+{
+public:
+	SlRawData(): data(0), len(0)
+	{
+
+	}
+	SlRawData& operator= (uint8_t * right)
+	{
+		data = right;
+		return *this;
+	}
+	SlRawData& operator= (uint32_t right)
+	{
+		len = right;
+		return *this;
+	}
+	uint8_t * data;
+	uint32_t len;
+
+};
+
 int main()
 {
-
     SomeSlLinkProvider dtlProvider;
     //SlNetworkProvider<1> networkProvider(dtlProvider);
 //    SlTable myTable;

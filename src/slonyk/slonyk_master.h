@@ -2,7 +2,7 @@
 #include "eng_settings.h"
 #include "i_descriptor.h"
 
-#include "i_slave.h"
+#include "slonyk_slave.h"
 
 
 template<uint32_t slavesNum>
@@ -20,7 +20,7 @@ class SlMaster
         }
     private:
         template <class... AddArg>
-        void addSlave(ISlave * slave, AddArg*... slavesArg)
+        void addSlave(SlSlave * slave, AddArg*... slavesArg)
         {
             m_slaves[m_slavesItr] = slave;
             m_slavesItr++;
@@ -28,5 +28,5 @@ class SlMaster
         }
         void addSlave(){};
         uint32_t m_slavesItr = 0;
-        ISlave * m_slaves[slavesNum];
+        SlSlave * m_slaves[slavesNum];
 };

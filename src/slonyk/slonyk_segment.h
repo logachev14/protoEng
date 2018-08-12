@@ -4,23 +4,13 @@
 #include "slonyk_settings.h"
 #include "i_packet.h"
 
-enum class SlMessageType
-{
-        SL_BROADCAST = 0,
-        SL_WRITE = 1,
-        SL_READ = 2
-};
-
-enum class SlAcknowledge
-{
-        SL_REQUEST = 0,
-        SL_RESPONSE = 1
-};
-
 class SlSegment : public SegmentBase<SlAcknowledge, SlMessageType, uint16_t>
 {
     public:
-        SlSegment() : m_currAck(SlAcknowledge::SL_REQUEST), m_currMessType(SlMessageType::SL_BROADCAST), m_currAddr(0), m_dataLen(0)
+        SlSegment() : m_currAck(SlAcknowledge::SL_REQUEST),
+					  m_currMessType(SlMessageType::SL_BROADCAST),
+					  m_currAddr(0),
+					  m_dataLen(0)
         {
 
         }
@@ -28,19 +18,42 @@ class SlSegment : public SegmentBase<SlAcknowledge, SlMessageType, uint16_t>
         {
             return m_currAck;
         }
+        void setAck(SlAcknowledge & ack)
+        {
+        	m_currAck = ack;
+        }
         SlMessageType & getMessageType()
         {
             return m_currMessType;
+        }
+        void setMessageType(SlMessageType & messType)
+        {
+        	m_currMessType = messType;
         }
         uint16_t & getDevAddr()
         {
             return m_currAddr;
         }
+        void setAddr(uint16_t addr)
+        {
+        	m_currAddr = addr;
+        }
+
         void getData(uint8_t * data, uint32_t * len)
         {
             data = m_rawData;
             *len = m_dataLen;
         }
+        void setData(uint8_t * newData, uint32_t len)
+        {
+        	if(len > SL_MAX_DATA_LEN)
+        	{
+        		ENG_ASSERT();
+        	}
+        	memcpy(m_rawData, newData, len);
+        	m_dataLen = len;
+        }
+
 
         void fromPacket(IPacket & packet)
         {
@@ -52,7 +65,6 @@ class SlSegment : public SegmentBase<SlAcknowledge, SlMessageType, uint16_t>
             parseHeader(headerPtr, *headerLen);
             packet.getData(dataPtr, dataLen);
             memcpy(m_rawData, dataPtr, *dataLen);
-
         }
 
     private:
@@ -102,12 +114,12 @@ class SlSegment : public SegmentBase<SlAcknowledge, SlMessageType, uint16_t>
                 }
                 case SL_MESS_WRITE:
                 {
-                    m_currAck = SlMessageType::SL_WRITE;
+                	m_currMessType = SlMessageType::SL_WRITE;
                     break;
                 }
                 case SL_MESS_READ:
                 {
-                    m_currAck = SlMessageType::SL_READ;
+                	m_currMessType = SlMessageType::SL_READ;
                     break;
                 }
                 default:
@@ -118,17 +130,3 @@ class SlSegment : public SegmentBase<SlAcknowledge, SlMessageType, uint16_t>
             m_currAddr = addr;
         }
 };
-
-
-
-
-//template<class AckType, class MessageType, class DeviceAddrType>
-//class SegmentBase
-//{
-//    public:
-//        virtual AckType & getAck() = 0;
-//        virtual MessageType & getMessageType() = 0;
-//        virtual DeviceAddrType & getDevAddr() = 0;
-//        virtual void getData(uint8_t * data, uint32_t len);
-//        virtual ~SegmentBase(){};
-//};

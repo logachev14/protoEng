@@ -44,9 +44,22 @@ enum class WoInt8RegNames
 class SimpleTable : public ITable
 {
     public:
-        void getRoRegs(IRegister * regs, uint32_t regsNum)
+        void getRegs(IRegister * regs, uint32_t * regsNum)
         {
-
+        	regs = *m_totalRegs;
+        	*regsNum = m_totalRegsNum;
+        }
+        void writeReg(uint32_t regAddr, uint8_t * data, uint32_t dataLen)
+        {
+        	if(m_totalRegs[regAddr]->getAccessType() == RegAccessType::WO)
+        	{
+        		ENG_ASSERT();
+        	}
+        	m_totalRegs[regAddr]->setBytes(data, dataLen);
+        }
+        IRegister * getReg(uint32_t regAddr)
+        {
+        	return m_totalRegs[regAddr];
         }
         Uint32Reg & getReg(RoUint32RegNames addr)
         {
@@ -87,5 +100,6 @@ class SimpleTable : public ITable
 
         Uint8Reg m_woint8regnames_gen[2] = { Uint8Reg(9, RegAccessType::WO),
                                              Uint8Reg(10, RegAccessType::WO) };
-
+        IRegister * m_totalRegs[4] = {&m_rouint32regnames_gen[0], &m_rouint32regnames_gen[1], &m_rouint32regnames_gen[2], &m_rouint32regnames_gen[3] };
+        uint32_t m_totalRegsNum = 4;
 };

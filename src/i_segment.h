@@ -6,7 +6,6 @@ class ISegment
 {
     public :
         virtual void getData(uint8_t * data, uint32_t * len) = 0;
-        virtual void getRaw(uint8_t * data, uint32_t * dataLen, uint8_t * header, uint8_t * headerLen) = 0;
         virtual void fromPacket(IPacket & packet) = 0;
         virtual ~ISegment(){};
 };
