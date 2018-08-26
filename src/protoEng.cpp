@@ -7,7 +7,10 @@
 #include "slonyk_table.h"
 #include "slonyk_data_link_provider.h"
 #include "i_provider.h"
+#include "slonyk_transport_provider.h"
 using namespace std;
+
+
 
 
 class SomeSlLinkProvider : public SlDataLinkProvider<1>
@@ -58,6 +61,9 @@ public:
 int main()
 {
     SomeSlLinkProvider dtlProvider;
+    SlTransportProvider trProvider;
+    SimpleTable smTable;
+    SlSlave<SimpleTable> slave(10, smTable, trProvider);
     //SlNetworkProvider<1> networkProvider(dtlProvider);
 //    SlTable myTable;
 //    SimpleTable smTable;

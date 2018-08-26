@@ -3,22 +3,29 @@
 #include "slonyk_table.h"
 #include "sl_session.h"
 
+
+class ISlave
+{
+public:
+	virtual void getRoRegs(IRegister * reg, uint32_t * regsNum) = 0;
+	virtual void getRegsToUpdate(IRegister * reg, uint32_t * regsNum) = 0;
+	virtual uint32_t getAddr() = 0;
+	virtual ~ISlave(){};
+};
+
+template<class TableType>
 class SlSlave : public SlSession
 {
     public:
-        SlSlave(uint32_t addr, ITable & table, ITransportProvider & provider): m_addr(addr), m_table(table), m_provider(provider)
+        SlSlave(uint32_t addr, TableType & table, ITransportProvider & provider): m_addr(addr), m_table(table), m_provider(provider)
         {
 
         }
-        uint32_t getSlaveAddr()
+        uint32_t getAddr()
         {
             return m_addr;
         }
-        ITable & getSlaveTable()
-        {
-            return m_table;
-        }
-        ITable & getTable()
+        TableType & getTable()
         {
             return m_table;
         }
@@ -30,12 +37,15 @@ class SlSlave : public SlSession
         		{
 					case SlMessageType::SL_READ :
 					{
-
+						// нужно собрать ответ
+						composeAnswer(segment);
+						m_provider.send(m_responseSegment);
 						break;
 					}
 					case SlMessageType::SL_WRITE :
 					{
-
+						composeAnswer(segment);
+						m_provider.send(m_responseSegment);
 						break;
 					}
 					case SlMessageType::SL_BROADCAST :
@@ -47,56 +57,55 @@ class SlSlave : public SlSession
         	}
 
         }
-        virtual void sync()
-        {
-
-        }
     private:
-    void composeAnswer(SlSegment & segment)
+    void composeAnswer(SlSegment & incomeSegment)
     {
-    	SlAcknowledge ack = SlAcknowledge::SL_RESPONSE;
-    	m_responseSegment.setAck(ack);
-    	m_responseSegment.setMessageType(segment.getMessageType());
-    	m_responseSegment.setAddr(m_addr);
-
-    	uint8_t * responseDataPtr = 0;
-    	uint32_t * len;
-    	m_responseSegment.getData(responseDataPtr, len);
-
-
-    	uint8_t * data = 0;
-    	uint32_t * len = 0;
-    	segment.getData(data, len);
-    	if(*len <= 0 )
-    	{
-    		ENG_ASSERT();
-    	}
-    	uint8_t numOfRegs = *data;
-    	*responseDataPtr = numOfRegs;
-    	// ���������� �� �������
-		uint8_t regDataStartPos = SL_REGS_ADDR_START_POS + (numOfRegs * 2);
-		for(uint8_t i = 0; i < numOfRegs; i++)
-		{
-			// ����
-			memcpy((responseDataPtr + 1),(data + (SL_REGS_ADDR_START_POS) * (i + 1)), 2 );
-			uint16_t addr = 0;
-			addr |= *(data + (SL_REGS_ADDR_START_POS) * (i + 1))  << 0;
-			addr |= *(data + (SL_REGS_ADDR_START_POS + 1) * (i + 1)) << 8;
-
-			IRegister * reg = m_table.getReg(addr);
-			uint8_t regDataLen = reg->getLen();
-			if(segment.getMessageType() == SlMessageType::SL_WRITE)
-			{
-				reg->setBytes((data + regDataStartPos), regDataLen);
-			}
-			else
-			{
-
-
-			}
-
-			regDataStartPos += regDataLen;
-		}
+    	//TODO заполнить m_responseSegment, получить/отдать данные
+//    	// предполагается, что ответить необходимо, поэтому собираем ответ
+//    	SlAcknowledge ack = SlAcknowledge::SL_RESPONSE;
+//    	m_responseSegment.setAck(ack);
+//    	m_responseSegment.setMessageType(segment.getMessageType());
+//    	m_responseSegment.setAddr(m_addr);
+//
+//    	uint8_t * responseDataPtr = 0;
+//    	uint32_t * len;
+//    	m_responseSegment.getData(responseDataPtr, len);
+//
+//
+//    	uint8_t * data = 0;
+//    	//
+//    	uint32_t * len = 0;
+//    	segment.getData(data, len);
+//    	if(*len <= 0 )
+//    	{
+//    		ENG_ASSERT();
+//    	}
+//    	uint8_t numOfRegs = *data;
+//    	*responseDataPtr = numOfRegs;
+//    	// ���������� �� �������
+//		uint8_t regDataStartPos = SL_REGS_ADDR_START_POS + (numOfRegs * 2);
+//		for(uint8_t i = 0; i < numOfRegs; i++)
+//		{
+//			// ����
+//			memcpy((responseDataPtr + 1),(data + (SL_REGS_ADDR_START_POS) * (i + 1)), 2 );
+//			uint16_t addr = 0;
+//			addr |= *(data + (SL_REGS_ADDR_START_POS) * (i + 1))  << 0;
+//			addr |= *(data + (SL_REGS_ADDR_START_POS + 1) * (i + 1)) << 8;
+//
+//			IRegister * reg = m_table.getReg(addr);
+//			uint8_t regDataLen = reg->getLen();
+//			if(segment.getMessageType() == SlMessageType::SL_WRITE)
+//			{
+//				reg->setBytes((data + regDataStartPos), regDataLen);
+//			}
+//			else
+//			{
+//
+//
+//			}
+//
+//			regDataStartPos += regDataLen;
+//		}
     }
     SlSegment m_responseSegment;
     uint32_t m_addr;
