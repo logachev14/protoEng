@@ -57,15 +57,15 @@ private:
     uint32_t m_addr;
 };
 
-template<>
-void Register<uint32_t>::getBytes(uint8_t * buf, uint32_t * len)
-{
-    *buf = 0;
-    *(buf + 1) = 1;
-    *(buf + 2) = 2;
-    *(buf + 3) = 3;
-    *len = 4;
-}
+//template<class T>
+//void Register<uint32_t>::getBytes(uint8_t * buf, uint32_t * len)
+//{
+//    *buf = 0;
+//    *(buf + 1) = 1;
+//    *(buf + 2) = 2;
+//    *(buf + 3) = 3;
+//    *len = 4;
+//}
 
 
 class Uint32Reg : public Register<uint32_t>

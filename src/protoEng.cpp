@@ -64,6 +64,10 @@ int main()
     SlTransportProvider trProvider;
     SimpleTable smTable;
     SlSlave<SimpleTable> slave(10, smTable, trProvider);
+    SimpleSlave smSlave;
+    SlMaster<1> master(&smSlave);
+    SlSegment seg;
+    smSlave.segmentReceivedCallback(seg);
     //SlNetworkProvider<1> networkProvider(dtlProvider);
 //    SlTable myTable;
 //    SimpleTable smTable;

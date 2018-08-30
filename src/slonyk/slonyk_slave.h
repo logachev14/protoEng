@@ -2,7 +2,16 @@
 #include "eng_settings.h"
 #include "slonyk_table.h"
 #include "sl_session.h"
+#include "i_transport_provider.h"
 
+
+
+/**
+ *
+ * @Имя класса : ISlave
+ * @Описание :
+ *
+*/
 
 class ISlave
 {
@@ -10,7 +19,27 @@ public:
 	virtual void getRoRegs(IRegister * reg, uint32_t * regsNum) = 0;
 	virtual void getRegsToUpdate(IRegister * reg, uint32_t * regsNum) = 0;
 	virtual uint32_t getAddr() = 0;
+	virtual uint32_t getTimeout() = 0;
+	virtual ITransportProvider & getProvider() = 0;
+	virtual void connectionStateChanged(bool state) = 0;
 	virtual ~ISlave(){};
+};
+
+class SlSlaveBase : public ISlave
+{
+public :
+	callback::Callback<void (SlSegment & segment)> segmentReceivedCallback;
+};
+
+class SimpleSlave : public SlSlaveBase
+{
+public:
+	void getRoRegs(IRegister * reg, uint32_t * regsNum){};
+	void getRegsToUpdate(IRegister * reg, uint32_t * regsNum){};
+	uint32_t getAddr(){};
+	uint32_t getTimeout(){};
+	ITransportProvider & getProvider(){};
+	void connectionStateChanged(bool state){};
 };
 
 template<class TableType>

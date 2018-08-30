@@ -22,14 +22,14 @@
 #define SL_ADDR_POS 2
 #define SL_REGS_ADDR_START_POS 5
 
-enum class SlMessageType
+enum SlMessageType
 {
         SL_BROADCAST = 0,
         SL_WRITE = 1,
         SL_READ = 2
 };
 
-enum class SlAcknowledge
+enum SlAcknowledge
 {
         SL_REQUEST = 0,
         SL_RESPONSE = 1

@@ -1,6 +1,8 @@
 #pragma once
 #include "eng_settings.h"
 #include "i_packet.h"
+#include "i_register.h"
+
 
 class ISegment
 {
@@ -10,8 +12,8 @@ class ISegment
 		// добавление регистра с данными, или добавление просто адреса ргеистра
 		// true - регистр добален в сегмент
 		// false - соответственно, добален небыл.
-		virtual bool AddReg(IRegister & reg) = 0;
-		virtual bool AddReg(uint32_t regAddr, uint32_t regLen) = 0;
+		virtual bool addReg(IRegister & reg) = 0;
+		virtual bool addReg(uint32_t regAddr, uint32_t regLen) = 0;
         virtual ~ISegment(){};
 };
 

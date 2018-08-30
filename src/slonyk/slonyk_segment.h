@@ -40,7 +40,7 @@ class SlSegment : public SegmentBase<SlAcknowledge, SlMessageType, uint16_t>
         {
         	m_currAddr = addr;
         }
-        bool AddReg(IRegister & reg)
+        bool addReg(IRegister & reg)
         {
         	bool result = false;
         	uint8_t * regData = NULL;
@@ -72,7 +72,7 @@ class SlSegment : public SegmentBase<SlAcknowledge, SlMessageType, uint16_t>
         	}
         	return result;
         }
-        bool AddReg(uint32_t regAddr, uint32_t regLen)
+        bool addReg(uint32_t regAddr, uint32_t regLen)
         {
         	bool result = false;
         	if(hasFreeSpace(regLen + SL_REG_ADDR_LEN))
