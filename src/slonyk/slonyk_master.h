@@ -29,9 +29,8 @@ class SlMaster : public SlSession
             addSlave(slavesArg...);
         }
         void updateRoRegs(uint32_t currTime);
-    private:
-        void onSegmentReceived(SlSegment & recSegment);
 
+    private:
         template <class... AddArg>
         void addSlave(SlSlaveBase * slave, AddArg*... slavesArg)
         {
@@ -41,6 +40,30 @@ class SlMaster : public SlSession
             addSlave(slavesArg...);
         }
         void addSlave(){};
+
+
+        void onSegmentReceived(SlSegment & recSegment)
+        {
+            m_isCorrectAnswerReceived = false;
+            if(m_segToSend.getDevAddr() != recSegment.getDevAddr())
+            {
+                // не совпадают адреса
+                ENG_ASSERT();
+            }
+            //if(m_segToSend.getMessageType != recSegment.getMessageType())
+            {
+                // не совпадают типы сообщений
+                ENG_ASSERT();
+            }
+            if(recSegment.getAck() != SlAcknowledge::SL_RESPONSE)
+            {
+                // не ответ на запрос
+                ENG_ASSERT();
+            }
+            // во всех остальных случаях читаем/проверяем что пришло что нужно
+            m_isCorrectAnswerReceived = true;
+        }
+
         uint32_t m_slavesItr = 0;
         SlSlaveBase * m_slaves[slavesNum];
 

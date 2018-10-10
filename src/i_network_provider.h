@@ -1,8 +1,6 @@
 #pragma once
 #include "eng_settings.h"
-#include "i_packet.h"
-#include "i_segment.h"
-#include "i_transport_provider.h"
+#include "types.h"
 
 
 

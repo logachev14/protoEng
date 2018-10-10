@@ -4,6 +4,6 @@
 class SlSession
 {
 public :
-	virtual void onSegmentReceived(SlSegment & segment) = 0;
+	virtual void onSegmentReceived(SlSegment & recSegment) = 0;
 	virtual ~SlSession(){};
 };

@@ -108,26 +108,26 @@ void SlMaster<slavesNum>::updateRoRegs(uint32_t currTime)
  * @ Выходные параметры : нет
  *
 */
-template <uint32_t slavesNum>
-void SlMaster<slavesNum>::onSegmentReceived(SlSegment & recSegment)
-{
-	m_isCorrectAnswerReceived = false;
-	if(m_segToSend.getDevAddr() != recSegment.getDevAddr())
-	{
-		// не совпадают адреса
-		ENG_ASSERT();
-	}
-	//if(m_segToSend.getMessageType != recSegment.getMessageType())
-	{
-		// не совпадают типы сообщений
-		ENG_ASSERT();
-	}
-	if(recSegment.getAck() != SlAcknowledge::SL_RESPONSE)
-	{
-		// не ответ на запрос
-		ENG_ASSERT();
-	}
-	// во всех остальных случаях читаем/проверяем что пришло что нужно
-	m_isCorrectAnswerReceived = true;
-}
+//template <uint32_t slavesNum>
+//void SlMaster<slavesNum>::onSegmentReceived(SlSegment & recSegment)
+//{
+//	m_isCorrectAnswerReceived = false;
+//	if(m_segToSend.getDevAddr() != recSegment.getDevAddr())
+//	{
+//		// не совпадают адреса
+//		ENG_ASSERT();
+//	}
+//	//if(m_segToSend.getMessageType != recSegment.getMessageType())
+//	{
+//		// не совпадают типы сообщений
+//		ENG_ASSERT();
+//	}
+//	if(recSegment.getAck() != SlAcknowledge::SL_RESPONSE)
+//	{
+//		// не ответ на запрос
+//		ENG_ASSERT();
+//	}
+//	// во всех остальных случаях читаем/проверяем что пришло что нужно
+//	m_isCorrectAnswerReceived = true;
+//}
 

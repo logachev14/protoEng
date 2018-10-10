@@ -36,14 +36,14 @@ class SimpleSlave : public SlSlaveBase
 public:
 	void getRoRegs(IRegister * reg, uint32_t * regsNum){};
 	void getRegsToUpdate(IRegister * reg, uint32_t * regsNum){};
-	uint32_t getAddr(){};
-	uint32_t getTimeout(){};
+	uint32_t getAddr(){return 0;};
+	uint32_t getTimeout(){return 0;};
 	ITransportProvider & getProvider(){};
 	void connectionStateChanged(bool state){};
 };
 
 template<class TableType>
-class SlSlave : public SlSession
+class SlSlave : public SlSlaveBase
 {
     public:
         SlSlave(uint32_t addr, TableType & table, ITransportProvider & provider): m_addr(addr), m_table(table), m_provider(provider)
@@ -86,6 +86,11 @@ class SlSlave : public SlSession
         	}
 
         }
+        void getRoRegs(IRegister * reg, uint32_t * regsNum){};
+        void getRegsToUpdate(IRegister * reg, uint32_t * regsNum){};
+        uint32_t getTimeout(){return 0;};
+        ITransportProvider & getProvider(){return m_provider;};
+        void connectionStateChanged(bool state){};
     private:
     void composeAnswer(SlSegment & incomeSegment)
     {
